@@ -13,11 +13,16 @@ namespace MauticPlugin\MauticMultiDomainBundle\Model;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Mautic\CoreBundle\Event\TokenReplacementEvent;
 use Mautic\CoreBundle\Helper\Chart\ChartQuery;
 use Mautic\CoreBundle\Helper\Chart\LineChart;
 use Mautic\CoreBundle\Helper\TemplatingHelper;
+use Mautic\CoreBundle\Helper\CoreParametersHelper;
+use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\FormModel;
+use Mautic\CoreBundle\Security\Permissions\CorePermissions;
+use Mautic\CoreBundle\Translation\Translator;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\FieldModel;
 use Mautic\LeadBundle\Tracker\ContactTracker;
@@ -25,14 +30,16 @@ use Mautic\PageBundle\Model\TrackableModel;
 use MauticPlugin\MauticMultiDomainBundle\Entity\Multidomain;
 use MauticPlugin\MauticMultiDomainBundle\Event\MultidomainEvent;
 use MauticPlugin\MauticMultiDomainBundle\Form\Type\MultidomainType;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
-// use Symfony\Component\EventDispatcher\Event;
-use Symfony\Contracts\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 
 class MultidomainModel extends FormModel
 {
@@ -70,11 +77,44 @@ class MultidomainModel extends FormModel
      * 
      * @var EntityManager $entityManager
      */
-    private static $entityManager;
+    // private static $entityManager;
+
+        public function __construct(
+            EntityManagerInterface $em,
+            CorePermissions $security,
+            EventDispatcherInterface $dispatcher,
+            UrlGeneratorInterface $router,
+            Translator $translator,
+            UserHelper $userHelper,
+            LoggerInterface $logger,
+            CoreParametersHelper $coreParametersHelper,
+            \Mautic\FormBundle\Model\FormModel $formModel,
+            TrackableModel $trackableModel,
+            FieldModel $leadFieldModel,
+            ContactTracker $contactTracker
+        )
+        {
+            parent::__construct(
+                $em,
+                $security,
+                $dispatcher,
+                $router,
+                $translator,
+                $userHelper,
+                $logger,
+                $coreParametersHelper
+            );
+
+            $this->formModel = $formModel;
+            $this->trackableModel = $trackableModel;
+            $this->leadFieldModel = $leadFieldModel;
+            $this->contactTracker = $contactTracker;
+        }
+
     /**
      * MultidomainModel constructor.
      */
-    public function __construct(
+    /*public function __construct(
         \Mautic\FormBundle\Model\FormModel $formModel,
         TrackableModel $trackableModel,
         EventDispatcherInterface $dispatcher,
@@ -88,8 +128,8 @@ class MultidomainModel extends FormModel
         $this->dispatcher     = $dispatcher;
         $this->leadFieldModel = $leadFieldModel;
         $this->contactTracker = $contactTracker;
-        static::$entityManager = $entityManager;
-    }
+        
+    }*/
 
     /**
      * @return string
@@ -225,7 +265,7 @@ class MultidomainModel extends FormModel
                 $event->setEntityManager($this->em);
             }
 
-            $this->dispatcher->dispatch($name, $event);
+            $this->dispatcher->dispatch($event, $name);
 
             return $event;
         } else {

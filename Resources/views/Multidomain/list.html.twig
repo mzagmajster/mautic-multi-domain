@@ -1,0 +1,89 @@
+{# 
+ * @copyright   2016 Mautic, Inc. All rights reserved
+ * @author      Mautic, Inc
+ *
+ * @link        https://mautic.org
+ *
+ * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+#}
+
+{% set isIndex = 'index' == tmpl ? true : false %}
+{% set tmpl = 'list' %}
+{% extends isIndex ? '@MauticMultiDomain/Multidomain/index.html.twig' : 'MauticCore/Default/raw_output.html.twig' %}
+
+{% block content %}
+{% if items|length %}
+    <div class="table-responsive page-list">
+        <table class="table table-hover table-striped table-bordered multidomain-list" id="multidomainTable">
+            <thead>
+                <tr>
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        'checkall': 'true',
+                        'target': '#multidomainTable',
+                        'routeBase': 'multidomain',
+                        'templateButtons': {
+                            'delete': permissions['multidomain:items:delete']
+                        }
+                    }) }}
+                    {{ include('@MauticCore/Helper/tableheader.html.twig', {
+                        'sessionVar': 'multidomain',
+                        'orderBy': 'f.email',
+                        'text': 'plugin.multidomain.email',
+                        'class': 'col-multidomain-name',
+                        'default': true
+                    }) }}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            {{ include('@MauticCore/Helper/list_actions.html.twig', {
+                                'item': item,
+                                'templateButtons': {
+                                    'edit': securityHasEntityAccess(
+                                        permissions['multidomain:items:editown'],
+                                        permissions['multidomain:items:editother'],
+                                        item.getCreatedBy()
+                                    ),
+                                    'clone': permissions['multidomain:items:create'],
+                                    'delete': securityHasEntityAccess(
+                                        permissions['multidomain:items:deleteown'],
+                                        permissions['multidomain:items:deleteother'],
+                                        item.getCreatedBy()
+                                    )
+                                },
+                                'routeBase': 'multidomain'
+                            }) }}
+                        </td>
+                        <td>
+                            <div>
+                                {# {{ include('MauticCore:Helper:publishstatus_icon.html.twig', {'item': item, 'model': 'multidomain'}) }} #}
+                                <a data-toggle="ajax" href="{{ path('mautic_multidomain_action', {'objectId': item.getId(), 'objectAction': 'view'}) }}">
+                                    {{ item.getEmail() }}
+                                </a>
+                            </div>
+                            {% if item.getDomain() %}
+                                <div class="text-muted mt-4">
+                                    <small>{{ item.getDomain() }}</small>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        {{ include('@MauticCore/Helper/pagination.html.twig', {
+            'totalItems': items|length,
+            'page': page,
+            'limit': limit,
+            'baseUrl': path('mautic_multidomain_index'),
+            'sessionVar': 'multidomain'
+        }) }}
+    </div>
+{% else %}
+    {{ include('@MauticCore/Helper/noresults.html.twig', {'tip': 'mautic.multidomain.noresults.tip'}) }}
+{% endif %}
+{% endblock %}

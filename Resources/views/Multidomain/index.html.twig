@@ -1,0 +1,39 @@
+{# 
+ * @copyright   2016 Mautic, Inc. All rights reserved
+ * @author      Mautic, Inc
+ *
+ * @link        https://mautic.org
+ *
+ * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+#}
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% block mauticContent %}
+    multidomain
+{% endblock %}
+
+{% block headerTitle %}
+    {{ 'mautic.multidomain.title'|trans }}
+{% endblock %}
+
+{% block actions %}
+    {{ include('@MauticCore/Helper/page_actions.html.twig', {
+        'templateButtons': {
+            'new': permissions['multidomain:items:create']
+        },
+        'routeBase': 'multidomain'
+    }) }}
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-default bdr-t-wdh-0 mb-0">
+    {{ include('@MauticCore/Helper/list_toolbar.html.twig', {
+        'searchValue': searchValue,
+        'searchHelp': 'mautic.core.help.searchcommands',
+        'action': currentRoute
+    }) }}
+    <div class="page-list">
+        {{ block('_content') }}
+    </div>
+</div>
+{% endblock %}

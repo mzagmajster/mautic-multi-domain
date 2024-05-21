@@ -18,10 +18,10 @@ class MultidomainController extends AbstractStandardFormController
     /**
      * @return string
      */
-    protected function getControllerBase()
+    /*protected function getControllerBase()
     {
         return 'MauticMultiDomainBundle:Multidomain';
-    }
+    }*/
 
     /**
      * @return string
@@ -29,6 +29,11 @@ class MultidomainController extends AbstractStandardFormController
     protected function getModelName(): string
     {
         return 'multidomain';
+    }
+
+    protected function getTemplateBase()
+    {
+        return '@MauticMultiDomain/Multidomain';
     }
 
     /**
@@ -44,9 +49,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function indexAction($page = 1)
+    public function indexAction(Request $request, $page = 1)
     {
-        return parent::indexStandard($page);
+        return parent::indexStandard($request, $page);
     }
 
     /**
@@ -54,9 +59,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|Response
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        return parent::newStandard();
+        return parent::newStandard($request);
     }
 
     /**
@@ -67,9 +72,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|Response
      */
-    public function editAction($objectId, $ignorePost = false)
+    public function editAction(Request $request, $objectId, $ignorePost = false)
     {
-        return parent::editStandard($objectId, $ignorePost);
+        return parent::editStandard($request, $objectId, $ignorePost);
     }    
 
     /**
@@ -79,9 +84,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return array|JsonResponse|RedirectResponse|Response
      */
-    public function viewAction($objectId)
+    public function viewAction(Request $request, $objectId)
     {
-        return parent::viewStandard($objectId, 'maultidomain', 'plugin.maultidomain');
+        return parent::viewStandard($request, $objectId, 'maultidomain', 'plugin.maultidomain');
     }
 
     /**
@@ -91,9 +96,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|RedirectResponse|Response
      */
-    public function cloneAction($objectId)
+    public function cloneAction(Request $request, $objectId)
     {
-        return parent::cloneStandard($objectId);
+        return parent::cloneStandard($request, $objectId);
     }
 
     /**
@@ -103,9 +108,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|RedirectResponse
      */
-    public function deleteAction($objectId)
+    public function deleteAction(Request $request, $objectId)
     {
-        return parent::deleteStandard($objectId);
+        return parent::deleteStandard($request, $objectId);
     }
 
     /**
@@ -113,9 +118,9 @@ class MultidomainController extends AbstractStandardFormController
      *
      * @return JsonResponse|RedirectResponse
      */
-    public function batchDeleteAction()
+    public function batchDeleteAction(Request $request)
     {
-        return parent::batchDeleteStandard();
+        return parent::batchDeleteStandard($request);
     }
 
     

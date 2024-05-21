@@ -1,0 +1,59 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% set mauticContent = 'multidomain' %}
+{% set headerTitle = item.getEmail() %}
+
+{% block mauticContent %}
+    {{ mauticContent }}
+{% endblock %}
+
+{% block headerTitle %}
+    {{ headerTitle }}
+{% endblock %}
+
+{% block actions %}
+    {{ include('@MauticCore/Helper/page_actions.html.twig', {
+        'item': item,
+        'templateButtons': {
+            'edit': securityHasEntityAccess(
+                permissions['multidomain:items:editown'],
+                permissions['multidomain:items:editother'],
+                item.getCreatedBy()
+            ),
+            'clone': permissions['multidomain:items:create'],
+            'delete': securityHasEntityAccess(
+                permissions['multidomain:items:deleteown'],
+                permissions['multidomain:items:deleteother'],
+                item.getCreatedBy()
+            ),
+            'close': securityIsGranted('multidomain:items:view')
+        },
+        'routeBase': 'multidomain',
+        'langVar': 'multidomain'
+    }) }}
+{% endblock %}
+
+{% block content %}
+<!-- start: box layout -->
+<div class="box-layout">
+    <!-- container -->
+    <div class="col-md-9 bg-auto height-auto bdr-r pa-md">
+        <div class="row">
+            <div class="col-md-2">
+                <b>{{ 'plugin.multidomain.email'|trans }}:</b>
+            </div>
+            <div class="col-md-6">
+                {{ item.getEmail() }}
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-md-2">
+                <b>{{ 'plugin.multidomain.domain'|trans }}:</b>
+            </div>
+            <div class="col-md-6">
+                <p>{{ item.getDomain() }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

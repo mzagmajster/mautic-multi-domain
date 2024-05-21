@@ -1,0 +1,47 @@
+{% extends '@MauticCore/Default/content.html.twig' %}
+
+{% block mauticContent %}
+    multidomain
+{% endblock %}
+
+{% set header = entity.getId() 
+    ? 'mautic.multidomain.edit'|trans({'%title%': entity.getEmail()|trans}) 
+    : 'mautic.multidomain.new'|trans 
+%}
+{% block headerTitle %}
+    {{ header }}
+{% endblock %}
+
+
+
+{% block content %}
+
+{{ form_start(form) }}
+
+<!-- start: box layout -->
+<div class="box-layout">
+    <!-- container -->
+    <div class="col-md-9 bg-auto height-auto bdr-r pa-md">
+        <!-- Warning text to map domain -->
+        <div class="alert alert-warning">
+            <p>
+                {{ 'mautic.multidomain.add.warning'|trans }}
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.email) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(form.domain) }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-form-buttons" style="margin-left: 15px;">
+</div>
+
+{{ form_end(form) }}
+{% endblock %}

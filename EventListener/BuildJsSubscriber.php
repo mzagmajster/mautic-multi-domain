@@ -5,14 +5,12 @@ namespace MauticPlugin\MauticMultiDomainBundle\EventListener;
 use Mautic\CoreBundle\CoreEvents;
 use Mautic\CoreBundle\Event\BuildJsEvent;
 use Mautic\CoreBundle\Twig\Helper\AssetsHelper;
-//use Mautic\CoreBundle\Templating\Helper\AssetsHelper;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 class BuildJsSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var AssetsHelper
      */

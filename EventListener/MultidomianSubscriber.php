@@ -1,13 +1,5 @@
 <?php
 
-/*
- * @copyright   2016 Mautic, Inc. All rights reserved
- * @author      Mautic, Inc
- *
- * @link        https://mautic.org
- *
- * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
- */
 
 namespace MauticPlugin\MauticMultiDomainBundle\EventListener;
 
@@ -82,14 +74,14 @@ class MultidomianSubscriber implements EventSubscriberInterface
         MultidomainModel $multidomainModel,
         RequestStack $requestStack
     ) {
-        $this->router           = $router;
-        $this->ipHelper         = $ipLookupHelper;
-        $this->auditLogModel    = $auditLogModel;
-        $this->trackableModel   = $trackableModel;
-        $this->pageTokenHelper  = $pageTokenHelper;
-        $this->assetTokenHelper = $assetTokenHelper;
+        $this->router                 = $router;
+        $this->ipHelper               = $ipLookupHelper;
+        $this->auditLogModel          = $auditLogModel;
+        $this->trackableModel         = $trackableModel;
+        $this->pageTokenHelper        = $pageTokenHelper;
+        $this->assetTokenHelper       = $assetTokenHelper;
         $this->multidomainModel       = $multidomainModel;
-        $this->requestStack     = $requestStack;
+        $this->requestStack           = $requestStack;
     }
 
     /**
@@ -120,7 +112,7 @@ class MultidomianSubscriber implements EventSubscriberInterface
             if (false !== strpos($requestUri, $formGenerateUrl)) {
                 $id = InputHelper::_($this->requestStack->getCurrentRequest()->get('id'));
                 if (0 === strpos($id, 'mf-')) {
-                    $mfId             = str_replace('mf-', '', $id);
+                    $mfId                   = str_replace('mf-', '', $id);
                     $multidomainGenerateUrl = $this->router->generate('mautic_multidomain_action', ['id' => $mfId]);
 
                     $event->setResponse(new RedirectResponse($multidomainGenerateUrl));
@@ -144,9 +136,8 @@ class MultidomianSubscriber implements EventSubscriberInterface
                 'details'   => $details,
                 'ipAddress' => $this->ipHelper->getIpAddressFromRequest(),
             ];
-            
+
             $this->auditLogModel->writeToLog($log);
-            
         }
     }
 

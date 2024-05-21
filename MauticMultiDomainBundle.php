@@ -2,8 +2,8 @@
 
 namespace MauticPlugin\MauticMultiDomainBundle;
 
-use Mautic\PluginBundle\Bundle\PluginBundleBase;
 use Mautic\CoreBundle\Factory\MauticFactory;
+use Mautic\PluginBundle\Bundle\PluginBundleBase;
 use Mautic\PluginBundle\Entity\Plugin;
 
 /**

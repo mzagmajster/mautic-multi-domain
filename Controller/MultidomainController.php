@@ -3,29 +3,16 @@
 namespace MauticPlugin\MauticMultiDomainBundle\Controller;
 
 use Mautic\CoreBundle\Controller\AbstractStandardFormController;
-use Mautic\CoreBundle\Form\Type\DateRangeType;
-use MauticPlugin\MauticSpintaxBundle\Model\EmailVariation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class MultidomainController.
  */
 class MultidomainController extends AbstractStandardFormController
 {
-    /**
-     * @return string
-     */
-    /*protected function getControllerBase()
-    {
-        return 'MauticMultiDomainBundle:Multidomain';
-    }*/
-
-    /**
-     * @return string
-     */
     protected function getModelName(): string
     {
         return 'multidomain';
@@ -75,12 +62,10 @@ class MultidomainController extends AbstractStandardFormController
     public function editAction(Request $request, $objectId, $ignorePost = false)
     {
         return parent::editStandard($request, $objectId, $ignorePost);
-    }    
+    }
 
     /**
      * Displays details on a spintax.
-     *
-     * @param $objectId
      *
      * @return array|JsonResponse|RedirectResponse|Response
      */
@@ -122,6 +107,4 @@ class MultidomainController extends AbstractStandardFormController
     {
         return parent::batchDeleteStandard($request);
     }
-
-    
 }

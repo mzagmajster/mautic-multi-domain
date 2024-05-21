@@ -31,5 +31,4 @@ return function (ContainerConfigurator $configurator) {
         'mautic.multidomain.model.multidomain',
         \MauticPlugin\MauticMultiDomainBundle\Model\MultidomainModel::class
     );
-
 };

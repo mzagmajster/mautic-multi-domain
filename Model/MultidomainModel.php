@@ -1,29 +1,16 @@
 <?php
 
-/*
- * @copyright   2016 Mautic, Inc. All rights reserved
- * @author      Mautic, Inc
- *
- * @link        https://mautic.org
- *
- * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
- */
 
 namespace MauticPlugin\MauticMultiDomainBundle\Model;
 
-use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Mautic\CoreBundle\Event\TokenReplacementEvent;
-use Mautic\CoreBundle\Helper\Chart\ChartQuery;
-use Mautic\CoreBundle\Helper\Chart\LineChart;
-use Mautic\CoreBundle\Helper\TemplatingHelper;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
+use Mautic\CoreBundle\Helper\TemplatingHelper;
 use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\FormModel;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Mautic\CoreBundle\Translation\Translator;
-use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Model\FieldModel;
 use Mautic\LeadBundle\Tracker\ContactTracker;
 use Mautic\PageBundle\Model\TrackableModel;
@@ -31,15 +18,11 @@ use MauticPlugin\MauticMultiDomainBundle\Entity\Multidomain;
 use MauticPlugin\MauticMultiDomainBundle\Event\MultidomainEvent;
 use MauticPlugin\MauticMultiDomainBundle\Form\Type\MultidomainType;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\EventDispatcher\Event;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MultidomainModel extends FormModel
 {
@@ -74,12 +57,11 @@ class MultidomainModel extends FormModel
     protected $contactTracker;
 
     /**
-     * 
-     * @var EntityManager $entityManager
+     * @var EntityManager
      */
     // private static $entityManager;
 
-        public function __construct(
+    public function __construct(
             EntityManagerInterface $em,
             CorePermissions $security,
             EventDispatcherInterface $dispatcher,
@@ -92,43 +74,42 @@ class MultidomainModel extends FormModel
             TrackableModel $trackableModel,
             FieldModel $leadFieldModel,
             ContactTracker $contactTracker
-        )
-        {
-            parent::__construct(
-                $em,
-                $security,
-                $dispatcher,
-                $router,
-                $translator,
-                $userHelper,
-                $logger,
-                $coreParametersHelper
-            );
+        ) {
+        parent::__construct(
+            $em,
+            $security,
+            $dispatcher,
+            $router,
+            $translator,
+            $userHelper,
+            $logger,
+            $coreParametersHelper
+        );
 
-            $this->formModel = $formModel;
-            $this->trackableModel = $trackableModel;
-            $this->leadFieldModel = $leadFieldModel;
-            $this->contactTracker = $contactTracker;
-        }
+        $this->formModel      = $formModel;
+        $this->trackableModel = $trackableModel;
+        $this->leadFieldModel = $leadFieldModel;
+        $this->contactTracker = $contactTracker;
+    }
 
     /**
      * MultidomainModel constructor.
      */
     /*public function __construct(
-        \Mautic\FormBundle\Model\FormModel $formModel,
-        TrackableModel $trackableModel,
-        EventDispatcherInterface $dispatcher,
-        FieldModel $leadFieldModel,
-        ContactTracker $contactTracker,
-        EntityManager $entityManager
+    \Mautic\FormBundle\Model\FormModel $formModel,
+    TrackableModel $trackableModel,
+    EventDispatcherInterface $dispatcher,
+    FieldModel $leadFieldModel,
+    ContactTracker $contactTracker,
+    EntityManager $entityManager
     ) {
-        $this->formModel      = $formModel;
-        $this->trackableModel = $trackableModel;
-        // $this->templating     = $templating;
-        $this->dispatcher     = $dispatcher;
-        $this->leadFieldModel = $leadFieldModel;
-        $this->contactTracker = $contactTracker;
-        
+    $this->formModel      = $formModel;
+    $this->trackableModel = $trackableModel;
+    // $this->templating     = $templating;
+    $this->dispatcher     = $dispatcher;
+    $this->leadFieldModel = $leadFieldModel;
+    $this->contactTracker = $contactTracker;
+
     }*/
 
     /**
@@ -199,8 +180,8 @@ class MultidomainModel extends FormModel
     /**
      * {@inheritdoc}
      *
-     * @param Multidomain      $entity
-     * @param bool|false $unlock
+     * @param Multidomain $entity
+     * @param bool|false  $unlock
      */
     public function saveEntity($entity, $unlock = true): void
     {
@@ -208,12 +189,8 @@ class MultidomainModel extends FormModel
         $this->getRepository()->saveEntity($entity);
     }
 
-    
     /**
      * Get whether the color is light or dark.
-     *
-     * @param $hex
-     * @param $level
      *
      * @return bool
      */
@@ -278,5 +255,4 @@ class MultidomainModel extends FormModel
     {
         return include dirname(__DIR__).'/Config/config.php';
     }
-
 }

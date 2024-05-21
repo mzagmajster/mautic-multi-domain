@@ -3,8 +3,8 @@
 namespace MauticPlugin\MauticMultiDomainBundle\Controller\Api;
 
 use Mautic\ApiBundle\Controller\CommonApiController;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use MauticPlugin\MauticMultiDomainBundle\Entity\Multidomain;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 /**
  * Class MultidomainApiController.

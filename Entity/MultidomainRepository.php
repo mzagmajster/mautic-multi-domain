@@ -5,7 +5,7 @@ namespace MauticPlugin\MauticMultiDomainBundle\Entity;
 use Mautic\CoreBundle\Entity\CommonRepository;
 
 /**
- * MultidomainRepository
+ * MultidomainRepository.
  */
 class MultidomainRepository extends CommonRepository
 {
@@ -15,8 +15,8 @@ class MultidomainRepository extends CommonRepository
         $q->select('md')
         ->from(Multidomain::class, 'md')
         ->where('md.isPublished = :isPublished')
-        ->setParameters(['isPublished' => $isPublished])
-        ;
+        ->setParameters(['isPublished' => $isPublished]);
+
         return $q->getQuery()->getResult();
     }
 }

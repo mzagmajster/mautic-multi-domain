@@ -11,7 +11,7 @@ use Mautic\PluginBundle\Entity\Plugin;
  */
 class MauticMultiDomainBundle extends PluginBundleBase
 {
-    public static function onPluginInstall(Plugin $plugin, MauticFactory $factory, $metadata = null, $installedSchema = null)
+    public static function onPluginInstall(Plugin $plugin, MauticFactory $factory, $metadata = null, $installedSchema = null): void
     {
         if (null === $metadata) {
             $metadata = self::getMetadata($factory->getEntityManager());

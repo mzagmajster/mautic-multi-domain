@@ -46,13 +46,12 @@ return [
                 'arguments' => [
                     'mautic.form.model.form',
                     'mautic.page.model.trackable',
-                    'mautic.helper.templating',
+                    // 'templating',
                     'event_dispatcher',
                     'mautic.lead.model.field',
                     'mautic.tracker.contact',
                     'doctrine.orm.entity_manager',
                 ],
-                //'public' => true,
                 'alias' => 'model.multidomain.multidomain'
             ],
         ],
@@ -86,7 +85,7 @@ return [
             'mautic.multidomain.subscriber.buildjssubscriber' => [
                 'class'     => \MauticPlugin\MauticMultiDomainBundle\EventListener\BuildJsSubscriber::class,
                 'arguments' => [
-                    'templating.helper.assets',
+                    \Mautic\CoreBundle\Twig\Helper\AssetsHelper::class,
                     'request_stack',
                     'router',
                 ],

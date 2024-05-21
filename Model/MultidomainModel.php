@@ -26,7 +26,8 @@ use MauticPlugin\MauticMultiDomainBundle\Entity\Multidomain;
 use MauticPlugin\MauticMultiDomainBundle\Event\MultidomainEvent;
 use MauticPlugin\MauticMultiDomainBundle\Form\Type\MultidomainType;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
+// use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -38,7 +39,7 @@ class MultidomainModel extends FormModel
     /**
      * @var ContainerAwareEventDispatcher
      */
-    protected $dispatcher;
+    // protected $dispatcher;
 
     /**
      * @var \Mautic\FormBundle\Model\FormModel
@@ -76,7 +77,6 @@ class MultidomainModel extends FormModel
     public function __construct(
         \Mautic\FormBundle\Model\FormModel $formModel,
         TrackableModel $trackableModel,
-        TemplatingHelper $templating,
         EventDispatcherInterface $dispatcher,
         FieldModel $leadFieldModel,
         ContactTracker $contactTracker,
@@ -84,7 +84,7 @@ class MultidomainModel extends FormModel
     ) {
         $this->formModel      = $formModel;
         $this->trackableModel = $trackableModel;
-        $this->templating     = $templating;
+        // $this->templating     = $templating;
         $this->dispatcher     = $dispatcher;
         $this->leadFieldModel = $leadFieldModel;
         $this->contactTracker = $contactTracker;
@@ -117,7 +117,7 @@ class MultidomainModel extends FormModel
      *
      * @throws NotFoundHttpException
      */
-    public function createForm($entity, $formFactory, $action = null, $options = [])
+    public function createForm($entity, $formFactory, $action = null, $options = []): \Symfony\Component\Form\FormInterface
     {
         if (!$entity instanceof Multidomain) {
             throw new MethodNotAllowedHttpException(['Multidomain']);
@@ -147,7 +147,7 @@ class MultidomainModel extends FormModel
      *
      * @return Multidomain
      */
-    public function getEntity($id = null)
+    public function getEntity($id = null): ?object
     {
         if (null === $id) {
             return new Multidomain();
@@ -162,7 +162,7 @@ class MultidomainModel extends FormModel
      * @param Multidomain      $entity
      * @param bool|false $unlock
      */
-    public function saveEntity($entity, $unlock = true)
+    public function saveEntity($entity, $unlock = true): void
     {
         parent::saveEntity($entity, $unlock);
         $this->getRepository()->saveEntity($entity);
@@ -196,7 +196,7 @@ class MultidomainModel extends FormModel
      *
      * @throws \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
      */
-    protected function dispatchEvent($action, &$entity, $isNew = false, Event $event = null)
+    protected function dispatchEvent($action, &$entity, $isNew = false, Event $event = null): ?Event
     {
         if (!$entity instanceof Multidomain) {
             throw new MethodNotAllowedHttpException(['Multidomain']);

@@ -26,7 +26,7 @@ use MauticPlugin\MauticMultiDomainBundle\Model\MultidomainModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -98,19 +98,19 @@ class MultidomianSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST          => ['onKernelRequest', 0],
-            'mautic.multidomain_post_save'         => ['onMultidomainPostSave', 0],
-            'mautic.multidomain_delete'       => ['onMultidomainDelete', 0],
-            'mautic.multidomain_replacement' => ['onTokenReplacement', 0],
+            KernelEvents::REQUEST                   => ['onKernelRequest', 0],
+            'mautic.multidomain_post_save'          => ['onMultidomainPostSave', 0],
+            'mautic.multidomain_delete'             => ['onMultidomainDelete', 0],
+            'mautic.multidomain_replacement'        => ['onTokenReplacement', 0],
         ];
     }
 
     /*
      * Check and hijack the form's generate link if the ID has mf- in it
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
-        if ($event->isMasterRequest()) {
+        if ($event->isMainRequest()) {
             // get the current event request
             $request    = $event->getRequest();
             $requestUri = $request->getRequestUri();
